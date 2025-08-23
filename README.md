@@ -2,7 +2,7 @@
 ### Theory
 #### 1. 1D Ising Model
 - We first calculate the Hamiltonian: $H=-J \cdot \sum_{<i,j>}\sigma_i\sigma_j$, where
-sum-over-lattice evaluates the equation $N$ times. Therefore, there are a possible $2^N$ 
+the $\sum_{<i,j>}$ term evaluates the equation $N$ times. Therefore, there are a possible $2^N$ 
 possible spin configurations. 
 - We then need to weigh Boltzmann factors. The probability of a configuration appearing is not
 uniform, its weighted by $e^{- \beta H}$, where $H$ is the Hamiltonian we calculated and $$\beta = \frac{1}{k_B \cdot T}$$ 
