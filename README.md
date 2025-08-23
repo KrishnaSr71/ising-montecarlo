@@ -11,19 +11,19 @@ uniform, its weighted by e^-BH, where H is the Hamiltonian we calculated and B=1
 our 2D Ising Model shows that there is a phase transition (change in magnetization without 
 any external field).
 #### 2. 2D Ising Model
-    * We could prove that a 2D Ising Model undergoes a phase transition above a certain critical 
-    temperature using analytical methods (see Lans Onsanger's Transfer Matrix method), but we 
-    are more interested in using a Monte-Carlo algorithm to numerically simulate this 2D ising
-    model system.
+- We could prove that a 2D Ising Model undergoes a phase transition above a certain critical 
+temperature using analytical methods (see Lans Onsanger's Transfer Matrix method), but we 
+are more interested in using a Monte-Carlo algorithm to numerically simulate this 2D ising
+model system.
 
 ### Model
-    1. We initialize a lattice with randomized spins of -1 and 1. P(s -> s') describes the probability 
-    of a spin state to swap; i.e., go from -1 to 1 or vice versa.
-    2. We describe the probability function as:
-        P(s -> s')  = 1                         ... if H(s') < H(s)
-                    = e^(-B * (H(s')-H(s)))     ... otherwise
-    3. We create a nice graphical representation of spin states that evolves with time to (hopefully) 
-    observe a phase transition
-    * NOTE: We don't actually need to compute the hamiltonian for the entire lattice; once we roll a
-    random cell, we can compute Hi before the flip and Hf after, and compare those to get the exact
-    same result for delta-H
+1. We initialize a lattice with randomized spins of -1 and 1. P(s -> s') describes the probability 
+of a spin state to swap; i.e., go from -1 to 1 or vice versa.
+2. We describe the probability function as:
+    P(s -> s')  = 1                         ... if H(s') < H(s)
+                = e^(-B * (H(s')-H(s)))     ... otherwise
+3. We create a nice graphical representation of spin states that evolves with time to (hopefully) 
+observe a phase transition
+- NOTE: We don't actually need to compute the hamiltonian for the entire lattice; once we roll a
+random cell, we can compute Hi before the flip and Hf after, and compare those to get the exact
+same result for delta-H
