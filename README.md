@@ -5,8 +5,8 @@
 sum-over-lattice evaluates the equation $N$ times. Therefore, there are a possible $2^N$ 
 possible spin configurations. 
 - We then need to weigh Boltzmann factors. The probability of a configuration appearing is not
-uniform, its weighted by $e^-BH$, where $H$ is the Hamiltonian we calculated and $$B = \frac{1}{k_B \cdot T}$$ 
-- Now, we evaluate the partition function: $Z = \sum_{s_i}e^{-\betaH(s_i)}$, where $s_i$ encodes all
+uniform, its weighted by $e^{- \beta H}$, where $H$ is the Hamiltonian we calculated and $$\beta = \frac{1}{k_B \cdot T}$$ 
+- Now, we evaluate the partition function: $Z = \sum_{s_i}e^{- \beta H(s_i)}$, where $s_i$ encodes all
 possible configurations of the lattice.
 - NOTE: In a 1D Ising Model, there is no phase transition. However, applying these same equations to
 our 2D Ising Model shows that there is a phase transition (change in magnetization without 
