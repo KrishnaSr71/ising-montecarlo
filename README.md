@@ -1,12 +1,12 @@
 # 2D Magnetic Phase Transition Simulation Ising Model, using Monte Carlo
 ### Theory
 #### 1. 1D Ising Model
-- We first calculate the Hamiltonian: $H=-J * \sum_{<i,j>}\sigma_i\sigma_j$, where
+- We first calculate the Hamiltonian: $H=-J \cdot \sum_{<i,j>}\sigma_i\sigma_j$, where
 sum-over-lattice evaluates the equation $N$ times. Therefore, there are a possible $2^N$ 
 possible spin configurations. 
 - We then need to weigh Boltzmann factors. The probability of a configuration appearing is not
 uniform, its weighted by $e^-BH$, where $H$ is the Hamiltonian we calculated and $$B = \frac{1}{k_B \cdot T}$$ 
-- Now, we evaluate the partition function: $Z = \sum_{s_i}e^{-BH(s_i)}$, where $s_i$ encodes all
+- Now, we evaluate the partition function: $Z = \sum_{s_i}e^{-\betaH(s_i)}$, where $s_i$ encodes all
 possible configurations of the lattice.
 - NOTE: In a 1D Ising Model, there is no phase transition. However, applying these same equations to
 our 2D Ising Model shows that there is a phase transition (change in magnetization without 
@@ -21,13 +21,13 @@ model system.
 1. We initialize a lattice with randomized spins of -1 and 1. $P(\sigma\to\sigma')$ describes the probability 
 of a spin state to swap; i.e., go from -1 to 1 or vice versa.
 2. We describe the probability function as:
-\[
+$$
 P(s \to s') =
 \begin{cases}
-1, & \text{if } H(s') < H(s) \\
-e^{-\beta \cdot (H(s') - H(s))}, & \text{otherwise}
+1, & \text{if } H(\sigma') < H(\sigma) \\
+e^{-\beta \,(H(\sigma') - H(\sigma))}, & \text{otherwise}
 \end{cases}
-\]
+$$
 3. We create a nice graphical representation of spin states that evolves with time to (hopefully) 
 observe a phase transition
 - NOTE: We don't actually need to compute the hamiltonian for the entire lattice; once we roll a
