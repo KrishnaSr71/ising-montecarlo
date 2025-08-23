@@ -21,13 +21,11 @@ model system.
 1. We initialize a lattice with randomized spins of -1 and 1. $P(\sigma\to\sigma')$ describes the probability 
 of a spin state to swap; i.e., go from -1 to 1 or vice versa.
 2. We describe the probability function as:
-$$
-P(s \to s') =
+$$P(\sigma \to \sigma') =
 \begin{cases}
 1, & \text{if } H(\sigma') < H(\sigma) \\
 e^{-\beta \,(H(\sigma') - H(\sigma))}, & \text{otherwise}
-\end{cases}
-$$
+\end{cases}$$
 3. We create a nice graphical representation of spin states that evolves with time to (hopefully) 
 observe a phase transition
 - NOTE: We don't actually need to compute the hamiltonian for the entire lattice; once we roll a
