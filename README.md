@@ -29,5 +29,5 @@ e^{- \beta \Delta H}, & \text{otherwise} \end{cases}$$
 3. We create a nice graphical representation of spin states that evolves with time to (hopefully) 
 observe a phase transition
 - NOTE: We don't actually need to compute the hamiltonian for the entire lattice; once we roll a
-random cell, we can compute Hi before the flip and Hf after, and compare those to get the exact
-same result for delta-H.
+random cell, we can compute $H_i$ before the flip and $H_f$ after, and compare those to get the exact
+same result for $\Delta H$.
