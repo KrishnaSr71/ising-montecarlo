@@ -13,7 +13,7 @@ our 2D Ising Model shows that there is a phase transition (change in magnetizati
 any external field).
 #### 2. 2D Ising Model
 - We could prove that a 2D Ising Model undergoes a phase transition above a certain critical 
-temperature using analytical methods (see Lans Onsanger's Transfer Matrix method), but we 
+temperature using analytical methods (see [Transfer Matrix method](https://en.wikipedia.org/wiki/Ising_model#Two_dimensions)), but we 
 are more interested in using a Monte-Carlo algorithm to numerically simulate this 2D ising
 model system.
 
