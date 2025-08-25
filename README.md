@@ -18,6 +18,7 @@ are more interested in using a Monte-Carlo algorithm to numerically simulate thi
 model system.
 
 ### Model
+#### 1. Procedure
 1. We initialize a lattice with randomized spins of -1 and 1. $P(\sigma\to\sigma')$ describes the probability 
 of a spin state to swap; i.e., go from -1 to 1 or vice versa.
 2. We describe the probability function as:
@@ -31,3 +32,13 @@ observe a phase transition
 - NOTE: We don't actually need to compute the hamiltonian for the entire lattice; once we roll a
 random cell, we can compute $H_i$ before the flip and $H_f$ after, and compare those to get the exact
 same result for $\Delta H$.
+#### 2. Parameters
+- Simulation parameters:
+  * `runs`: Number of Monte Carlo runs, (default) `5*10**7`
+  * `gui`: Enable GUI to view lattice evolution. Because of multiproc constraints, we only show Main thread output. (default) `False`
+  * `frames`: Number of frames to update the simulation, only if GUI is enabled. `500`
+- Physical parameters:
+  * `J`: Alignment operator; 1 for alignment, -1 for anti-alignment. (default) `1`
+  * `T_min`: Start temperature for simulation. (default) `0.5`
+  * `T_max`: End temperature for simulation. (default) `4.5`
+  * `T_n`: # of simulation steps. (default) `20`
