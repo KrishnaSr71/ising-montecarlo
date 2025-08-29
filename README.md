@@ -1,5 +1,5 @@
 # 2D Magnetic Phase Transition Simulation Ising Model, using Monte Carlo
-### Theory
+## Theory
 #### 1. 1D Ising Model
 - We first calculate the Hamiltonian: $H=-J \cdot \sum_{<i,j>}\sigma_i\sigma_j$, where
 the $\sum_{<i,j>}$ term evaluates the equation $N$ times. Therefore, there are a possible $2^N$ 
@@ -17,7 +17,7 @@ temperature using analytical methods (see [Transfer Matrix method](https://en.wi
 are more interested in using a Monte-Carlo algorithm to numerically simulate this 2D ising
 model system.
 
-### Model
+## Model
 #### 1. Procedure
 1. We initialize a lattice with randomized spins of -1 and 1. $P(\sigma\to\sigma')$ describes the probability 
 of a spin state to swap; i.e., go from -1 to 1 or vice versa.
@@ -45,4 +45,8 @@ same result for $\Delta H$.
 #### 3. Results
 ![Phase Transition Diagram](https://github.com/KrishnaSr71/ising-montecarlo/blob/master/Diagram.png)
 * Apart from the outlier at T=1.5, the results follow a second order phase transition, with the critical point at T=~2.2.
-* We see the outlier at T=1.5 possibly due to the lattice reaching a meta-stable state. Ways to address this would be using Wolff/Swedensen-Wang algorithms to flip entire clusters at once instead of just singular cells in the lattice. 
+* We see the outlier at T=1.5 possibly due to the lattice reaching a meta-stable state. Ways to address this would be using Wolff/Swedensen-Wang algorithms to flip entire clusters at once instead of just singular cells in the lattice.
+
+## TODO
+- Possibly explore an N-dimensional monte carlo ising model, and plot it on a gradient with axes `Magnetization, Temperature, Dimension` ?
+- Demonstrate on Qiskit !!
