@@ -38,7 +38,7 @@ same result for $\Delta H$.
 #### 2. Parameters
 - Simulation parameters:
   * `sweeps_per_cell`: Number of Monte Carlo runs per cell, (default) `5*10**4`
-  * `gui`: Enable GUI to view lattice evolution. Because of multiproc constraints, we only show Main thread output. Disabling this flag compiles Monte Carlo sim to machine code(default) `False`
+  * `gui`: Enable GUI to view lattice evolution. Because of multiproc constraints, we only show Main thread output. Disabling this flag compiles Monte Carlo sim to machine code. (default) `False`
   * `frames`: Number of frames to update the simulation, only if GUI is enabled. (default) `1500`
   * `samples_per_temp`: Number of samples to be averaged over each temperature. (default) `10`
 - Physical parameters:
