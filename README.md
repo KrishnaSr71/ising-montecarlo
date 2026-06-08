@@ -1,4 +1,7 @@
 # 2D Magnetic Phase Transition Simulation Ising Model, using Monte Carlo
+
+<img src="https://github.com/KrishnaSr71/ising-montecarlo/blob/master/T1.gif" alt="drawing" height="200"/> <img src="https://github.com/KrishnaSr71/ising-montecarlo/blob/master/T2.gif" alt="drawing" height="200"/>
+
 ## Theory
 #### 1. 1D Ising Model
 - We first calculate the Hamiltonian: $H=-J \cdot \sum_{<i,j>}\sigma_i\sigma_j$, where
