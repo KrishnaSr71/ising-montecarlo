@@ -34,19 +34,19 @@ random cell, we can compute $H_i$ before the flip and $H_f$ after, and compare t
 same result for $\Delta H$.
 #### 2. Parameters
 - Simulation parameters:
-  * `runs`: Number of Monte Carlo runs, (default) `5*10**7`
+  * `sweeps_per_cell`: Number of Monte Carlo runs per cell, (default) `5*10**4`
   * `gui`: Enable GUI to view lattice evolution. Because of multiproc constraints, we only show Main thread output. (default) `False`
-  * `frames`: Number of frames to update the simulation, only if GUI is enabled. `500`
+  * `frames`: Number of frames to update the simulation, only if GUI is enabled. (default) `1500`
+  * `samples_per_temp`: Number of samples to be averaged over each temperature. (default) `10`
 - Physical parameters:
   * `J`: Alignment operator; 1 for alignment, -1 for anti-alignment. (default) `1`
-  * `T_min`: Start temperature for simulation. (default) `0.5`
-  * `T_max`: End temperature for simulation. (default) `4.5`
-  * `T_n`: # of simulation steps. (default) `20`
+  * `T_min`: Start temperature for simulation. (default) `1`
+  * `T_max`: End temperature for simulation. (default) `3.5`
+  * `T_n`: # of simulation steps. (default) `50`
+#### 3. Running
+- Install requirements w/: `pip install -r requirements.txt`
+- Run program w/: `python ising.py`
 #### 3. Results
 ![Phase Transition Diagram](https://github.com/KrishnaSr71/ising-montecarlo/blob/master/Diagram.png)
 * Apart from the outlier at T=1.5, the results follow a second order phase transition, with the critical point at T=~2.2.
 * We see the outlier at T=1.5 possibly due to the lattice reaching a meta-stable state. Ways to address this would be using Wolff/Swedensen-Wang algorithms to flip entire clusters at once instead of just singular cells in the lattice.
-
-## TODO
-- Possibly explore an N-dimensional monte carlo ising model, and plot it on a gradient with axes `Magnetization, Temperature, Dimension` ?
-- Demonstrate on Qiskit !!

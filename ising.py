@@ -1,99 +1,146 @@
 import sys
 import numpy as np
 import multiprocessing as mp
-import matplotlib.pyplot as plot
-from scipy.constants import k
+import matplotlib.pyplot as plt
+import signal
+from numba import njit
 
-# params for simulation
-runs =  5 * (10**7)
-frames = 500
+# Params
+sweeps_per_cell = 5 * (10**4)
+frames = 1500
+samples_per_temp = 10
+
 gui = False
 
-# params for physical system
-j = 1 #align, -1 for anti-align
-T_min = 0.5 
-T_max = 4.5
-T_n = 20
-# k_b = k # Boltzmann constant: for some reason this results in z values below being only 0.0 or 1.0 (possible float arithmetic issue?)
-k_b = 1 #fix
+# Physical params
+j = 1
+T_min = 1.0
+T_max = 3.5
+T_n = 50
 
-# lattice params
-rows = 100
-cols = 100
+rows = 50
+cols = 50
 
-#consts
 Ts = np.linspace(T_min, T_max, T_n)
 
-def hamiltonian(latt, sigy, sigx):
-    sumoverlatt = 0
+# Physics
+def hamiltonian(latt, y, x):
+    return -j * (
+        latt[(y+1) % rows][x] * latt[y][x] +
+        latt[(y-1) % rows][x] * latt[y][x] +
+        latt[y][(x+1) % cols] * latt[y][x] +
+        latt[y][(x-1) % cols] * latt[y][x]
+    )
 
-    sumoverlatt += latt[(sigy+1) % rows][sigx] * latt[sigy][sigx] + latt[sigy][(sigx+1) % cols] * latt[sigy][sigx]
-    sumoverlatt += latt[(sigy-1) % rows][sigx] * latt[sigy][sigx] + latt[sigy][(sigx-1) % cols] * latt[sigy][sigx]
-    return -j*sumoverlatt
 
-def mcmove(beta, plotprog):
-    plot.ion()
-    figure, axes = plot.subplots()
+def mcmove_gui(beta, lattice):
+    runs = sweeps_per_cell * rows * cols;
 
-    try: 
-        for i in range(runs):
-            randx, randy = np.random.randint(0,rows), np.random.randint(0,cols)
+    plt.ion()
+    fig, ax = plt.subplots()
+    img = ax.imshow(lattice, cmap="spring", interpolation="nearest")
+    ax.axis("off")
 
-            hi = hamiltonian(lattice, randy, randx)
-            dH = -2*hi
+    for i in range(runs):
 
-            if dH <= 0:
-                lattice[randy][randx] *= -1
+        x = np.random.randint(0, cols)
+        y = np.random.randint(0, rows)
+
+        hi = hamiltonian(lattice, y, x)
+        dH = -2 * hi
+
+        if dH <= 0 or np.random.rand() < np.exp(-beta * dH):
+            lattice[y][x] *= -1
+
+        if (i % frames == 0):
+            img.set_data(lattice)
+            ax.set_title(f"T = {1/beta:.2f}, step = {i:,}")
+            fig.canvas.draw_idle()
+            plt.pause(0.001)
+
+    plt.ioff()
+    img.set_data(lattice)
+    ax.set_title(f"Final state, T = {1/beta:.2f}")
+    plt.show()
+
+@njit(cache=True)
+def mcmove_nogui(beta, lattice, j):
+    runs = sweeps_per_cell * rows * cols;
+    for i in range(runs):
+        x = np.random.randint(0, cols)
+        y = np.random.randint(0, rows)
+        hi = -j * (
+            lattice[(y+1) % rows, x] * lattice[y, x] +
+            lattice[(y-1) % rows, x] * lattice[y, x] +
+            lattice[y, (x+1) % cols] * lattice[y, x] +
+            lattice[y, (x-1) % cols] * lattice[y, x]
+        )
+        dH = -2 * hi
+        if dH <= 0 or np.random.rand() < np.exp(-beta * dH):
+            lattice[y, x] *= -1
+
+
+def simulatefortemp(T, show):
+    try:
+        beta = 1 / T
+
+        mag = []
+        for i in range(samples_per_temp):
+            lattice = np.random.choice([-1, 1], size=(rows, cols)).astype(np.int32)
+            if show:
+                mcmove_gui(beta, lattice)
             else:
-                pi_s = np.random.rand()
-                z = np.exp(-beta * dH)
+                mcmove_nogui(beta, lattice, j)
 
-                if pi_s < z:
-                    lattice[randy][randx] *= -1
+            mag.append(abs(np.sum(lattice)) / (rows * cols))
+        print(f'Temperature: {T} | Magnetization: {np.mean(mag)}\n')
+        return T, mag
 
-            if plotprog and i % frames == 0:
-                axes.clear()
-                axes.imshow(lattice, cmap="spring", interpolation='nearest')
-                axes.axis("off")
-                axes.text(0.5, -0.05, f"Step: {i}, T: {1/beta}",
-                    transform=axes.transAxes,
-                    ha='center', va='top', fontsize=12)
-                plot.draw()
-                plot.pause(0.01)
     except KeyboardInterrupt:
-        print("Simulation stopping...")
-        sys.exit()
+        return None
 
-    plot.ioff()
-    plot.close()
+def worker_init():
+    signal.signal(signal.SIGINT, signal.SIG_IGN)
 
-def simulatefortemp(T, plotprog):
-    N = rows*cols
-    global lattice
-    lattice = np.random.choice([-1, 1], size=(rows, cols))
-    mcmove(1/T, plotprog)
-    netmag = abs(np.sum(lattice) / N) 
-    print(f'Magnetization = {netmag} for Temp = {T}')
-    return (T, netmag)
+if __name__ == "__main__":
 
+    mp.freeze_support()
 
-nproc = mp.cpu_count()
-chunks = [Ts[i:i+nproc] for i in range(0, len(Ts), nproc)]
-results = []
+    nproc = mp.cpu_count()
+    chunks = [Ts[i:i+nproc] for i in range(0, len(Ts), nproc)]
 
-for chunk in chunks:
-    args = [(chunk[0], gui)] + [(T, False) for T in chunk[1:]]
-    with mp.Pool(processes=mp.cpu_count()) as pool:
-        chresults = pool.starmap(simulatefortemp, args)
-    results.extend(chresults)
+    results = []
 
-if __name__ == '__main__':
-    results.sort(key= lambda x: x[0])
-    Ts_sort = [r[0] for r in results]
-    magvector = [r[1] for r in results]
+    for chunk in chunks:
+        args = [(chunk[0], gui)] + [(T, False) for T in chunk[1:]]
+        with mp.Pool(processes=nproc, initializer=worker_init) as pool:
+            results_async = pool.starmap_async(simulatefortemp, args)
+            try:
+                while not results_async.ready():
+                    results_async.wait(timeout=0.5)
+                res = results_async.get()
+                results.extend([r for r in res if r is not None])
+            except KeyboardInterrupt:
+                pool.terminate()
+                pool.join()
+                print("\nStopped by user")
+                sys.exit()
 
-    plot.scatter(Ts_sort, magvector)
-    plot.xlabel('Temperature J/K')
-    plot.ylabel('Magnetization')
-    plot.title('Temp v Mag for 2D ising model')
-    plot.show()
+    # -----------------------
+    # Plot results
+    # -----------------------
+    results.sort(key=lambda x: x[0])
+
+    Ts_sorted = [r[0] for r in results]
+    mags = [r[1] for r in results]
+
+    mags_mean = [np.mean(r[1]) for r in results]
+    mags_std  = [np.std(r[1])  for r in results]
+
+    plt.figure()
+    plt.errorbar(Ts_sorted, mags_mean, yerr=mags_std,
+                 fmt='o', capsize=4, capthick=1, elinewidth=1, markersize=5)
+    plt.xlabel("Temperature")
+    plt.ylabel("Magnetization")
+    plt.title("2D Ising Model: Magnetization vs Temperature")
+    plt.show()
