@@ -10,7 +10,7 @@ sweeps_per_cell = 5 * (10**4)
 frames = 1500
 samples_per_temp = 10
 
-gui = False
+gui = True
 
 # Physical params
 j = 1
