@@ -48,5 +48,4 @@ same result for $\Delta H$.
 - Run program w/: `python ising.py`
 #### 3. Results
 ![Phase Transition Diagram](https://github.com/KrishnaSr71/ising-montecarlo/blob/master/Diagram2.png)
-* Apart from the outlier at T=1.5, the results follow a second order phase transition, with the critical point at T=~2.2.
-* We see the outlier at T=1.5 possibly due to the lattice reaching a meta-stable state. Ways to address this would be using Wolff/Swedensen-Wang algorithms to flip entire clusters at once instead of just singular cells in the lattice.
+* The results follow a second order phase transition, with the critical point at T=~2.2.
