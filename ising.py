@@ -103,7 +103,7 @@ def worker_init():
     signal.signal(signal.SIGINT, signal.SIG_IGN)
 
 if __name__ == "__main__":
-
+    mp.set_start_method('spawn')
     mp.freeze_support()
 
     nproc = mp.cpu_count()
