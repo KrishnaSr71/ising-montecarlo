@@ -2,6 +2,10 @@
 
 <img src="https://github.com/KrishnaSr71/ising-montecarlo/blob/master/T1.gif" alt="drawing" height="200"/> <img src="https://github.com/KrishnaSr71/ising-montecarlo/blob/master/T2.gif" alt="drawing" height="200"/>
 
+
+1. Install requirements w/: `pip install -r requirements.txt`
+2. Run program w/: `python ising.py`
+
 ## Theory
 #### 1. 1D Ising Model
 - We first calculate the Hamiltonian: $H=-J \cdot \sum_{<i,j>}\sigma_i\sigma_j$, where
@@ -27,7 +31,7 @@ of a spin state to swap; i.e., go from -1 to 1 or vice versa.
 2. We describe the probability function as:
 
 $$P(\sigma \to \sigma') = \begin{cases} 
-1, & \text{if} \\ H(\sigma) < H(\sigma') \\ 
+1, & \text{if} \Delta H \leq 0 \\
 e^{- \beta \Delta H}, & \text{otherwise} \end{cases}$$
 
 3. We create a nice graphical representation of spin states that evolves with time to (hopefully) 
@@ -37,18 +41,15 @@ random cell, we can compute $H_i$ before the flip and $H_f$ after, and compare t
 same result for $\Delta H$.
 #### 2. Parameters
 - Simulation parameters:
-  * `sweeps_per_cell`: Number of Monte Carlo runs per cell, (default) `5*10**4`
+  * `sweeps_per_cell`: Number of Monte Carlo runs per cell. (default) `5*10**4`
   * `gui`: Enable GUI to view lattice evolution. Because of multiproc constraints, we only show Main thread output. Disabling this flag compiles Monte Carlo sim to machine code. (default) `False`
   * `frames`: Number of frames to update the simulation, only if GUI is enabled. (default) `1500`
   * `samples_per_temp`: Number of samples to be averaged over each temperature. (default) `10`
 - Physical parameters:
-  * `J`: Alignment operator; 1 for alignment, -1 for anti-alignment. (default) `1`
+  * `J`: Coupling constant; 1 for alignment, -1 for anti-alignment. (default) `1`
   * `T_min`: Start temperature for simulation. (default) `1`
   * `T_max`: End temperature for simulation. (default) `3.5`
-  * `T_n`: # of simulation steps. (default) `50`
-#### 3. Running
-- Install requirements w/: `pip install -r requirements.txt`
-- Run program w/: `python ising.py`
+  * `T_n`: # of temperature points. (default) `50`
 #### 3. Results
 ![Phase Transition Diagram](https://github.com/KrishnaSr71/ising-montecarlo/blob/master/Diagram2.png)
-* The results follow a second order phase transition, with the critical point at T=~2.2.
+* The results follow a second order phase transition, with the critical point at T=~2.27.
